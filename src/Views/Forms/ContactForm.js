@@ -15,7 +15,7 @@ const ContactForm = () => {
         <TextField
           label="First Name"
           name="firstname"
-          variant="outlined"
+          variant="standard"
           required
           fullWidth
           value={formValues.firstname}
@@ -32,7 +32,7 @@ const ContactForm = () => {
         <TextField
           label="Last Name"
           name="lastname"
-          variant="outlined"
+          variant="standard"
           required
           fullWidth
           value={formValues.lastname}
@@ -49,7 +49,7 @@ const ContactForm = () => {
         <TextField
           label="Email Address"
           name="email"
-          variant="outlined"
+          variant="standard"
           required
           fullWidth
           value={formValues.email}
@@ -66,7 +66,7 @@ const ContactForm = () => {
         <TextField
           label="Street Address 1"
           name="address1"
-          variant="outlined"
+          variant="standard"
           required
           fullWidth
           value={formValues.line1}
@@ -83,7 +83,7 @@ const ContactForm = () => {
         <TextField
           label="Phone No"
           name="phone"
-          variant="outlined"
+          variant="standard"
           fullWidth
           value={formValues.phone}
           onChange={(e) =>
@@ -99,7 +99,7 @@ const ContactForm = () => {
         <TextField
           label="Postal Code"
           name="postal_code"
-          variant="outlined"
+          variant="standard"
           required
           fullWidth
           value={formValues.postal_code}
@@ -116,7 +116,7 @@ const ContactForm = () => {
         <TextField
           label="City"
           name="city"
-          variant="outlined"
+          variant="standard"
           required
           fullWidth
           value={formValues.city}
@@ -137,7 +137,7 @@ const ContactForm = () => {
             <TextField
               label="Country"
               name="country"
-              variant="outlined"
+              variant="standard"
               required
               fullWidth
               {...params}

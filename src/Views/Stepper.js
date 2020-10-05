@@ -61,15 +61,15 @@ const StepContent = ({ step }) => {
   }
 };
 
-const API_URL = "https://dev.stylumia.com/";
-
 const Steppers = () => {
   const classes = style();
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [cardStatus] = useState(true);
-  const [cardMessage] = useState("");
   const [{ formValues }] = useStateValue();
+  const CUSTOMER_ENDPOINT = process.env.REACT_APP_CUSTOMER;
+  const ORDER_ENDPOINT = process.env.REACT_APP_ORDER;
+  const CAPTURE_ENDPOINT = process.env.REACT_APP_CAPTURE;
 
   const handleNext = () => {
     if (activeStep === 1) {
@@ -81,13 +81,12 @@ const Steppers = () => {
 
   const handleBack = () =>
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  const handleReset = () => setActiveStep(0);
 
   const capture = (e) => {
     console.log(formValues.auth_type);
     setLoading(true);
     axios
-      .post(`${API_URL}customer`, {
+      .post(CUSTOMER_ENDPOINT, {
         data: {
           address: formValues.line1,
           name: formValues.firstname + " " + formValues.lastname,
@@ -102,7 +101,7 @@ const Steppers = () => {
         if (Object.keys(dataCustomer.data).length > 2) {
           if (dataCustomer.data.id) {
             axios
-              .post(`${API_URL}order`, {
+              .post(ORDER_ENDPOINT, {
                 data: {
                   customer_id: dataCustomer.data.id,
                   method: formValues.auth_type,
@@ -120,11 +119,13 @@ const Steppers = () => {
                       handler: async (response) => {
                         try {
                           const paymentId = response.razorpay_payment_id;
-                          const url = `${API_URL}capture/`;
 
-                          const captureResponse = await axios.post(url, {
-                            data: { payment_id: paymentId },
-                          });
+                          const captureResponse = await axios.post(
+                            CAPTURE_ENDPOINT,
+                            {
+                              data: { payment_id: paymentId },
+                            }
+                          );
                           if (captureResponse.data.status === "captured") {
                             alert("payment successfull");
                             setActiveStep(
