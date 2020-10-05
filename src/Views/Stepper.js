@@ -68,7 +68,6 @@ const Steppers = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [cardStatus] = useState(true);
-  const [cardMessage] = useState("");
   const [{ formValues }] = useStateValue();
 
   const handleNext = () => {
@@ -81,10 +80,8 @@ const Steppers = () => {
 
   const handleBack = () =>
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  const handleReset = () => setActiveStep(0);
 
   const capture = (e) => {
-    console.log(formValues.auth_type);
     setLoading(true);
     axios
       .post(`${API_URL}customer`, {
@@ -135,8 +132,16 @@ const Steppers = () => {
                             alert("payment failed");
                           }
                         } catch (err) {
-                          console.log(err);
+                          alert("payment failed");
+                          setLoading(false);
                         }
+                      },
+                      modal: {
+                        ondismiss: function () {
+                          alert("payment failed");
+                          handleBack();
+                          setLoading(false);
+                        },
                       },
 
                       theme: {
