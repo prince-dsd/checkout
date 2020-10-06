@@ -29,7 +29,7 @@ const Main = () => {
   return (
     <Box component="main" className={classes.boxWrapper}>
       <Container maxWidth="md" className={classes.container}>
-        <Paper elevation={5}>
+        <Paper elevation={0}>
           <CustomizedSteppers />
         </Paper>
       </Container>
