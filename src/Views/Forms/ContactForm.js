@@ -1,5 +1,7 @@
 import React from "react";
 import { TextField, Grid, Typography } from "@material-ui/core";
+import { TextValidator } from "react-material-ui-form-validator";
+
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { useStateValue } from "../../StateContext";
 
@@ -46,7 +48,7 @@ const ContactForm = () => {
         />
       </Grid>
       <Grid item xs={12} sm={4}>
-        <TextField
+        {/* <TextField
           label="Email Address"
           name="email"
           variant="standard"
@@ -60,11 +62,28 @@ const ContactForm = () => {
               value: e.target.value,
             })
           }
+        /> */}
+        <TextValidator
+          label="Email Address"
+          name="email"
+          required
+          variant="standard"
+          fullWidth
+          value={formValues.email}
+          validators={["required", "isEmail"]}
+          errorMessages={["this field is required", "Email is not valid"]}
+          onChange={(e) =>
+            dispatch({
+              type: "editFormValue",
+              key: "email",
+              value: e.target.value,
+            })
+          }
         />
       </Grid>
       <Grid item xs={12} sm={6}>
         <TextField
-          label="Street Address 1"
+          label="Street Address"
           name="address1"
           variant="standard"
           required
@@ -85,6 +104,7 @@ const ContactForm = () => {
           name="phone"
           variant="standard"
           fullWidth
+          inputProps={{ maxLength: 10 }}
           value={formValues.phone}
           onChange={(e) =>
             dispatch({
@@ -107,7 +127,7 @@ const ContactForm = () => {
             dispatch({
               type: "editFormValue",
               key: "postal_code",
-              value: e.target.value,
+              value: e.target.value.replace(/[^0-9,.]/g, ""),
             })
           }
         />

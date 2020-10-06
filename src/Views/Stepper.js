@@ -30,6 +30,8 @@ import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 
+import { ValidatorForm } from "react-material-ui-form-validator";
+
 // OVERALL STYLE
 const style = makeStyles((theme) => ({
   button: {
@@ -132,7 +134,7 @@ const Steppers = () => {
                             data: { payment_id: paymentId },
                           });
                           if (captureResponse.data.status === "captured") {
-                            alert("payment successfull");
+                            // alert("payment successfull");
                             setActiveStep(
                               (prevActiveStep) => prevActiveStep + 1
                             );
@@ -171,6 +173,10 @@ const Steppers = () => {
           handleClickOpen();
           setLoading(false);
         }
+      })
+      .catch((err) => {
+        handleClickOpen();
+        setLoading(false);
       });
   };
   const [open, setOpen] = React.useState(false);
@@ -257,7 +263,7 @@ const Steppers = () => {
             <Typography variant="h4">Thank You</Typography>
           </Grid>
         ) : (
-          <form
+          <ValidatorForm
             autoComplete="off"
             className={classes.form}
             onSubmit={(e) => {
@@ -295,7 +301,7 @@ const Steppers = () => {
                 </Button>
               </Grid>
             </Grid>
-          </form>
+          </ValidatorForm>
         )}
       </Box>
       <Dialog
