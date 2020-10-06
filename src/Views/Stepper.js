@@ -21,6 +21,15 @@ import { useStateValue } from "../StateContext";
 import StepConnector from "./StepConnector";
 import axios from "axios";
 import PaymentForm from "./Forms/PaymentForm";
+
+import Dialog from "@material-ui/core/Dialog";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import { withStyles } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+
 // OVERALL STYLE
 const style = makeStyles((theme) => ({
   button: {
@@ -61,7 +70,8 @@ const StepContent = ({ step }) => {
   }
 };
 
-const API_URL = window.location.href;
+// const API_URL = window.location.href;
+const API_URL = "https://payment.stylumia.com/";
 
 const Steppers = () => {
   const classes = style();
@@ -88,7 +98,7 @@ const Steppers = () => {
         data: {
           address: formValues.line1,
           name: formValues.firstname + " " + formValues.lastname,
-          contact: formValues.phone,
+          contact: "+91" + formValues.phone,
           email: formValues.email,
           postalcode: formValues.postal_code,
           country: formValues?.country.name,
@@ -129,17 +139,19 @@ const Steppers = () => {
                             );
                             setLoading(false);
                           } else {
-                            alert("payment failed");
+                            handleClickOpen();
+                            setLoading(false);
                           }
                         } catch (err) {
-                          alert("payment failed");
+                          // alert("payment failed");
+                          handleClickOpen();
                           setLoading(false);
                         }
                       },
                       modal: {
                         ondismiss: function () {
-                          alert("payment failed");
-                          handleBack();
+                          // alert("payment failed");
+                          handleClickOpen();
                           setLoading(false);
                         },
                       },
@@ -150,12 +162,68 @@ const Steppers = () => {
                     };
                     const rzp1 = new window.Razorpay(options);
                     rzp1.open();
+                  } else {
+                    handleClickOpen();
+                    setLoading(false);
                   }
               });
           }
+        } else {
+          handleClickOpen();
+          setLoading(false);
         }
       });
   };
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    handleBack();
+  };
+  const styles = (theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(2),
+    },
+    closeButton: {
+      position: "absolute",
+      right: theme.spacing(1),
+      top: theme.spacing(1),
+      color: theme.palette.grey[500],
+    },
+  });
+  const DialogContent = withStyles((theme) => ({
+    root: {
+      padding: theme.spacing(2),
+    },
+  }))(MuiDialogContent);
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
 
   return (
     <>
@@ -231,6 +299,25 @@ const Steppers = () => {
           </form>
         )}
       </Box>
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Payment Failed
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            We are sorry for the inconvenience caused.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Try Again
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
