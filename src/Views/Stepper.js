@@ -70,8 +70,7 @@ const StepContent = ({ step }) => {
   }
 };
 
-// const API_URL = window.location.href;
-const API_URL = "https://payment.stylumia.com/";
+const API_URL = window.location.href;
 
 const Steppers = () => {
   const classes = style();
