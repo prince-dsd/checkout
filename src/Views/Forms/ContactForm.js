@@ -104,7 +104,8 @@ const ContactForm = () => {
           name="phone"
           variant="standard"
           fullWidth
-          inputProps={{ maxLength: 10 }}
+          required
+          inputProps={{ maxLength: 10, minLength: 10 }}
           value={formValues.phone}
           onChange={(e) =>
             dispatch({
